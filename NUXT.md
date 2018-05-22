@@ -69,7 +69,8 @@ author: jialei
 	``` dos?linenums
 	npm run generate
 	```
-	
+
+
 # 插件 [element-ui](http://element-cn.eleme.io/#/zh-CN/component/quickstart)
 ***
 
@@ -121,6 +122,74 @@ author: jialei
 		</div>
 	</template>
 	```
+	
+	
+	# 插件 [vant](https://www.youzanyun.com/zanui)
+***
+
+- npm 安装 vant
+
+	``` dos?linenums
+	npm i vant -S
+	```
+
+- 在 plugins 文件夹下新建 vant.js
+
+	``` javascript
+	import Vue from 'vue'
+	import Vant from 'vant'
+
+	export default () => {
+		Vue.use(Vant)
+	}
+	```
+
+- 修改 nuxt.config.js 文件，添加 css 和 plugins 键值对
+
+	``` javascript
+	module.exports = {
+	 
+	  css: [
+		'vant/lib/vant-css/index.css'
+	  ],
+
+	  plugins: [
+		'@/plugins/vant'
+	  ]
+	}
+	```
+
+- 测试，在 pages 文件夹下新建 index.vue ，写入以下代码
+
+	```javascript
+	<template>
+		<section class="container">
+		hello
+		<van-circle
+		  v-model="currentRate"
+		  :rate="30"
+		  :speed="100"
+		  :text="text"
+		/>
+	  </section>
+	</template>
+
+	<script>
+	export default {
+	  data() {
+		return {
+		  currentRate: 0
+		};
+	  },
+	  computed: {
+		text() {
+		  return this.currentRate.toFixed(0) + '%'
+		}
+	  }
+	}
+	</script>
+	```
+	
 	
 # 引入 [axios](https://www.npmjs.com/package/axios) 包
 ***
