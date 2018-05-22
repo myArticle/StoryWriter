@@ -210,10 +210,8 @@ author: jialei
 	<script>
 	export default {
 		data () {
-			this.$console.error('==name==', 'abcd')
-			return {
-				name: 'abcd'
-			}
+			this.$info('==info==', 'vue-logger')  // this => Vue
+			//  this.$console.log('==info==', 'set shortname = false')
 		}
 	}
 	</script>
