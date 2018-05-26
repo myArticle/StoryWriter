@@ -77,14 +77,14 @@ grammar_cjkRuby: true
  - - 添加插件，新建情景模式 shadowsocks
  - - - 配置情景模式 shadowsocks 的代理服务器
 
-| Scheme | Protocol | Server | Port |
-| -- | -- | -- | -- |
-| (default) | SOCKS5 | 127.0.0.1 | 1080 |
+	| Scheme | Protocol | Server | Port |
+	| -- | -- | -- | -- |
+	| (default) | SOCKS5 | 127.0.0.1 | 1080 |
 
  - - - 配置情景模式 auto switch 
 
 | Condition Type | Condition Details | Profile |
-| -- | -- | -- | -- |
+| -- | -- | -- |
 | Host wildcard | \*.google.com | shadowsocks |
 | | Add condition | |
 | | ... | |
