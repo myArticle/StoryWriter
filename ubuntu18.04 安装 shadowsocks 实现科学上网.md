@@ -83,12 +83,12 @@ grammar_cjkRuby: true
 
  - - - 配置情景模式 auto switch 
 
-| Condition Type | Condition Details | Profile |
-| -- | -- | -- |
-| Host wildcard | \*.google.com | shadowsocks |
-| | Add condition | |
-| | ... | |
-| Default |  | [Direct] |
+	| Condition Type | Condition Details | Profile |
+	| -- | -- | -- |
+	| Host wildcard | \*.google.com | shadowsocks |
+	| | Add condition | |
+	| | ... | |
+	| Default |  | [Direct] |
 
 - - - Import online rule lists, 输入链接 https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
 
