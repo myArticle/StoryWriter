@@ -141,3 +141,10 @@ grammar_cjkRuby: true
 
 
 ## 完
+
+| Condition Type | Condition Details | Profile |
+| -- | -- | -- | -- | -- | -- | -- |
+| Host wildcard | \*.google.com | shadowsocks |
+| | Add condition | |
+| | ... | |
+| Default |  | [Direct] |
