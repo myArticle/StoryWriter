@@ -85,7 +85,7 @@ grammar_cjkRuby: true
 
 | Condition Type | Condition Details | Profile |
 | -- | -- | -- | -- | -- | -- | -- |
-| Host wildcard | *.google.com | shadowsocks |
+| Host wildcard | \*.google.com | shadowsocks |
 | | Add condition | |
 | | ... | |
 | Default |  | [Direct] |
