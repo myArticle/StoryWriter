@@ -1,5 +1,5 @@
 ---
-title:  NUXT
+title:  NUXT 的使用
 url: https://zh.nuxtjs.org
 tags: 前端,框架
 grammar_cjkRuby: true
