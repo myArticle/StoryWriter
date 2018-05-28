@@ -6,8 +6,9 @@ grammar_cjkRuby: true
 
 
 # 字符串的扩展
----
 
+
+---
 ## 1.字符的 Unicode 表示法
 
 JavaScript 允许采用 `\u****` 的形式表示一个字符，其中 `****` 表示字符的 Unicode 码。
@@ -93,8 +94,40 @@ JavaScript 允许采用 `\u****` 的形式表示一个字符，其中 `****` 表
 Number(106).toString(16)		// "6a" => 十六进制
 
 '\j' === 'j'		// true
-'\152' === 'j'		// true
+// '\152' === 'j'		// true
 '\x6a' === 'j'		// true
 '\u006a' === 'j'		// true
 '\u{6a}' === 'j'		// true
 ```
+
+
+---
+## 2.codePointAt()
+
+JavaScript 内部，字符串以 UTF-16 的格式存储，每个字符固定为 2 个字符。对于那些需要 4 个字节存储的字符（Unicode 码大于 `0xFFFF` 的字符），JavaScript 会认为它们是两个字符。
+比如，汉字 “𠮷”（拼音： jí ）， Unicode 编码 `0x20bb7`	，十进制 `134071` ， UTF-16 `0xD842 0xDFB7` （十进制为  `55362 57271` ）， UTF-32 `00020bb7` ， UTF-8 `F0 A0 AE B7` 。
+一个字节为 8 位，每位用二进制表示，最大表示值为 `!$ 2^{8}-1 $` （即 255 ， 0xFF ）。
+
+``` javascript
+{
+	let str = '𠮷'
+	
+	str.codePointAt(0)		// 134071
+	
+	str.length		// 2
+	str.charAt(0)		// "�"
+	str.charAt(1)		// "�"
+	str.charCodeAt(0)		// 55362
+	str.charCodeAt(1)		// 57271
+	str.codePointAt(0)		// 134071
+	str.codePointAt(1)		// 57271
+	
+	Number(134071).toString(16)		// "20bb7"
+	Number(55362).toString(16)		// "d842"
+	Number(57271).toString(16)		// "dfb7"
+	
+	'\u{20bb7}'		// "𠮷"
+	'\uD842\uDFB7'		// "𠮷"
+}
+```
+
