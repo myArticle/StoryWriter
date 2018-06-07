@@ -143,3 +143,43 @@ date: 2018-6-6
 	};
 	</script>
 	```
+	
+
+***
+## 数组的某一值改变，不会触发页面的渲染
+
+>改变数组中的某一值，如果通过 `arr[index]` 这种方式，数组的值会改变，但不会触发重新渲染页面。所以，要想实现页面的重新渲染，需要用 `Vue.$set()` ，通过 `this.$set(arr, index, value)` 去改变数组中的值。
+
+``` html
+<template>
+	<section>
+    <ul>
+      <li v-for="(v, i) in a" :key="i" @click="changeIndexValue(i)">{{v}}</li>
+      <button @click="add">增加列表</button>
+    </ul>
+	</section>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      a: []
+    };
+  },
+  methods: {
+    add() {
+      this.a.push(this.a.length);
+    },
+    changeIndexValue(i) {
+      // this.a[i] = "我变了";
+      this.$set(this.a, i, "我变了");
+      console.log("a==>", this.a);
+    }
+  },
+  created() {
+    this.a.push("第一");
+  }
+};
+</script>
+```
