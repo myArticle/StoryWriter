@@ -13,8 +13,6 @@ date: 2018-6-6
 >2. 在父组件中引用子组件标签（如 `<Child></Child>` ），将父组件中的变量 `b` 绑定到一个属性上（如 `:a="b"` ）；
 >3. 在子组件中通过 `props` 接收父组件传递的值（如 `props: ["a"]` ），通过 `v-model="a"` 去查看；
 
-**注意：**
-
 - 新建子组件文件 child.vue
 
 	``` html
@@ -33,29 +31,29 @@ date: 2018-6-6
 	
 - 在父组件中引用子组件
 
-``` html
-<template>
-    <section>
-        <Child :a="b"></Child>
-        父组件：<input type="text" v-model="b">
-    </section>
-</template>
+	``` html
+	<template>
+		<section>
+			<Child :a="b"></Child>
+			父组件：<input type="text" v-model="b">
+		</section>
+	</template>
 
-<script>
-import Child from "@/components/child";
+	<script>
+	import Child from "@/components/child";
 
-export default {
-  components: {
-    Child
-  },
-  data() {
-    return {
-      b: "some data"
-    };
-  }
-};
-</script>
-```
+	export default {
+	  components: {
+		Child
+	  },
+	  data() {
+		return {
+		  b: "some data"
+		};
+	  }
+	};
+	</script>
+	```
 	
 	
 ***
