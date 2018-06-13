@@ -145,3 +145,51 @@ git push origin [tag-name]
 ``` dos?linenums
 git push
 ```
+
+
+---
+# 实例
+
+## Git global setup
+
+``` dos?linenums
+git config --global user.name "jialei"
+git config --global user.email "948962131@qq.com"
+```
+
+## Create a new repository
+
+``` dos?linenums
+git clone 
+git@gitlab.com:leijia/website.git
+
+cd website
+touch README.md
+git add README.md
+git commit -m "add README"
+git push -u origin master
+```
+
+## Existing folder
+
+``` dos?linenums
+cd existing_folder
+git init
+git remote add origin 
+git@gitlab.com:leijia/website.git
+
+git add .
+git commit -m "Initial commit"
+git push -u origin master
+```
+
+## Existing Git repository
+
+``` dos?linenums
+cd existing_repo
+git remote rename origin old-origin
+git remote add origin 
+git@gitlab.com:leijia/website.git
+git push -u origin --all
+git push -u origin --tags
+```
