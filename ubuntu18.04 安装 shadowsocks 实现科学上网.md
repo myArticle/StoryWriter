@@ -139,5 +139,17 @@ grammar_cjkRuby: true
 	
 - - 重启电脑后，打开浏览器输入 www.google.com 测试
 
+- 关闭服务
+
+	``` dos
+	service supervisor stop
+	```
+
+- 开启服务
+
+	``` dos
+	service supervisor start
+	```
+
 
 ## 完
