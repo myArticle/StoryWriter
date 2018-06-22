@@ -142,13 +142,13 @@ grammar_cjkRuby: true
 - 关闭服务
 
 	``` dos
-	service supervisor stop
+	sudo service supervisor stop
 	```
 
 - 开启服务
 
 	``` dos
-	service supervisor start
+	sudo service supervisor start
 	```
 
 
