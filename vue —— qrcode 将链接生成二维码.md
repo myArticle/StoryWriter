@@ -54,9 +54,17 @@ let QRCode = require("qrcode"),
 	codeURL = "https://www.github.com";
 
 QRCode.toDataURL(codeURL, (err, base64) => {
+	if (err) {
+		console.info(" QRCode.toDataURL err ==>", err);
+		return;
+	}
     base64 = base64.split(",")[1];
 	fs.writeFile(savePath, base64, "base64", (error) => {
-		
+		if (error) {
+			console.info(" fs.writeFile error ==>", error);
+			return;
+		}
+		console.info("save " + savePath);
 	})
 })
 ```
