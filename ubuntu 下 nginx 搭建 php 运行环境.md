@@ -17,7 +17,7 @@ date: 2018-6-27
 - 修改 php.ini ，将 `;cgi.fix_pathinfo=1` 改为 `cgi.fix_pathinfo=0`
 
 	``` dos?linenums
-	sudo vim /etc/php/7.2/cli/php.ini
+	sudo vim /etc/php/7.2/fpm/php.ini
 	```
 	
 - 重新加载 php7.2-fpm
