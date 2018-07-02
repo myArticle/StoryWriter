@@ -80,3 +80,13 @@ background-clip: padding-box;
 	background-origin: content-box;
 	```
 	
+	
+## 边框内圆角
+
+> 因为 `outline` 不会随着 `border` 的 `border-radius` 的圆角改变，但 `box-shadow` 会。所以，可以通过使用 `box-shadow` 的阴影 `补充` `border` 与 `outline` 之间的圆角。
+
+``` css
+border-radius: 100px;
+outline: 100px solid #aaa;
+box-shadow: 0 0 0 40px #aaa;
+```
