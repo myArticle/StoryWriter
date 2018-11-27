@@ -148,6 +148,27 @@ git push
 
 
 ---
+# 回滚
+
+- 查看 commit 的序列号
+
+```dos?linenums
+git log
+```
+
+- 将本地代码回滚到某一 commit 之前的版本，并在 commit 中添加了一条记录
+
+```dos?linenums
+git revert [commit-number]
+```
+
+- 同步远程仓库
+
+```dos?linenums
+git push
+```
+
+---
 # 实例
 
 ## Git global setup
