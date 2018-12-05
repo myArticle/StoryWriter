@@ -183,3 +183,59 @@ export default {
 };
 </script>
 ```
+
+
+***
+## 添加标题 title
+
+>像详情页这类的标题，一般都会采用其名称作为网页的标题（title），这时候就可以在获取到详情数据后通过给 `document.title` 去赋值来达到设置标题（title）的目的。如果直接 `console.log(document.title)` ，将会得到当前页面的标题（title）值。
+
+```html
+let detial_title = '要设置的标题'
+document.title = detial_title
+```
+
+>如果是固定的标题，那么可以给 `vue-router` 中的每一个路由实例的 `meta` 属性赋值一个包含 `title` 键值对的对象，然后在路由的钩子（beforeEach()）里去循环给每一个拥有 `meta.title` 属性的路由实例通过 `document.title = to.meta.title` 去设置标题（title）。
+
+``` javascript
+const routes ={
+	{
+		path: '/',
+		name: 'index',
+		component: () => import('@/views/index/index.vue'),
+		meta: { title: '首页' }
+	},
+	{
+		path: '/author',
+		name: 'author',
+		component: () => import('@/views/author/index.vue'),
+		meta: { title: '作者专栏' }
+	},
+	{
+		path: '/adv/:id',
+        name: 'advDetail',
+        component: () => import('@/views/adv/detail/index.vue'),
+        meta: { title: '软文详情' }
+    }
+}
+```
+
+``` javascript
+import Vue from 'vue'
+import Router from 'vue-router'
+import routes from './index.config'
+
+Vue.use(Router)
+
+const router = new Router({
+	routes
+})
+
+// router change setting title
+router.beforeEach((to, from, next) => {
+    if (to.meta.title) {
+        document.title = to.meta.title
+    }
+    next()
+})
+```
