@@ -270,6 +270,8 @@ export const browser = {
 
 ```html
 <script>
+import { browser } from '@/utils/terminal'
+
 	export default {
 		data() {
 			return {
