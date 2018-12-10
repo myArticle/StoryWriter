@@ -345,10 +345,26 @@ wxShare({
   desc: res.data.article.content,
   link:
 	window.location.href.split('#')[0] +
-	'?path=/#' +
+	'?wxConfigPath=/#' +
 	window.location.href.split('#')[1],
   imgUrl: res.data.article.cover_path
 })
+```
+
+> `router.js`
+
+```javascript
+...
+router.beforeEach((to, from, next) => {
+    if (to.query.wxConfigPath) {
+        next({
+            wxConfigPath: to.query.wxConfigPath
+        })
+        return
+    }
+    next()
+})
+...
 ```
 
 > `wxShare.js`
