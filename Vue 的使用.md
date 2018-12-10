@@ -295,41 +295,84 @@ import { browser } from '@/utils/terminal'
 >vue-router 采用的 hash 模式，即丑陋的 `#` 。
 >因为 vue 的单页面是通过改变 `url` `#` 后的部分实现页面的切换，而微信分享做签名时要传入当前页面的 `url` （不包括 `#` 后的部分），所以，只需在 `app.vue` 里做一次签名即可。如果这样做，那么分享出去的页面在打开时始终会是做签名时传入的那个 `url` 地址，要解决这个问题，可以在需要分享的页面去调用 `jssdk` 的 `api` 去手动设置正确的链接参数。
 
+>在 `App.vue` 里的 `methods` 对象中增加方法 `getConfig` ，传入参数 `url` ，返回签名成功的参数，配置 `wx.config()`。如果微信浏览器打开，弹出 `errMsg: ok` ，说明签名成功；其他则根据 `errMsg` 做错误分析。
+
 ```javascript
 getConfig() {
-                let url = window.location.href.split('#')[0]
-                getConfig(url).then(res => {
-                    console.log(res)
-                    let data = res.data
-                    wx.config({
-                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端console.log出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                        appId: data.appId, // 必填，公众号的唯一标识
-                        timestamp: data.timestamp, // 必填，生成签名的时间戳
-                        nonceStr: data.nonceStr, // 必填，生成签名的随机串
-                        signature: data.signature, // 必填，签名
-                        jsApiList: [
-                            'updateAppMessageShareData',
-                            'updateTimelineShareData',
-                            'onMenuShareAppMessage',
-                            'onMenuShareTimeline'
-                        ] // 必填，需要使用的JS接口列表
-                    });
+	let url = window.location.href.split('#')[0]
+	getConfig(url).then(res => {
+		console.log(res)
+		let data = res.data
+		wx.config({
+			debug: true, // 开启调试模式,调用的所有api的返回值会在客户端console.log出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			appId: data.appId, // 必填，公众号的唯一标识
+			timestamp: data.timestamp, // 必填，生成签名的时间戳
+			nonceStr: data.nonceStr, // 必填，生成签名的随机串
+			signature: data.signature, // 必填，签名
+			jsApiList: [
+				'updateAppMessageShareData',
+				'updateTimelineShareData',
+				'onMenuShareAppMessage',
+				'onMenuShareTimeline'
+			] // 必填，需要使用的JS接口列表
+		});
 
-                    // 微信预加载失败回调
-                    wx.error(function(res) {
-                    console.log(res)
-					alert(res)
-                    });
+		// 微信预加载失败回调
+		wx.error(function(res) {
+		console.log(res)
+		alert(res)
+		});
 
-                    wx.checkJsApi({
-                        jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareAppMessage', 'onMenuShareTimeline'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-                        success: function(res) {
-                        // 以键值对的形式返回，可用的api值true，不可用为false
-                        console.log(res)
-						alert(res)
-                        }
-                    });
+		wx.checkJsApi({
+			jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData', 'onMenuShareAppMessage', 'onMenuShareTimeline'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+			success: function(res) {
+			// 以键值对的形式返回，可用的api值true，不可用为false
+			console.log(res)
+			alert(res)
+			}
+		});
 
-                })
-            },
+	})
+}
+```
+
+>在需要做分享的页面去手动设置分享参数
+
+```javascript
+// 确保先拿到数据后，再去调用 `wxShare` 。
+wxShare({
+  title: res.data.article.title,
+  desc: res.data.article.content,
+  link:
+	window.location.href.split('#')[0] +
+	'?path=/#' +
+	window.location.href.split('#')[1],
+  imgUrl: res.data.article.cover_path
+})
+```
+
+> `wxShare.js`
+
+```javascript
+import wx from 'weixin-js-sdk'
+
+export function wxShare(config) {
+    wx.updateAppMessageShareData({
+        title: config.title, // 分享标题
+        desc: config.desc, // 分享描述
+        link: config.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: config.imgUrl, // 分享图标
+        success: function () {
+            // 设置成功
+        }
+    })
+    wx.updateTimelineShareData({
+        title: config.title, // 分享标题
+        link: config.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: config.imgUrl, // 分享图标
+        success: function () {
+            // 设置成功
+        }
+    })
+}
 ```
