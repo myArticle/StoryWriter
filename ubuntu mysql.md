@@ -52,7 +52,7 @@ date: 2018-7-23
 	dpkg --list|grep mysql
 	```
 	
-	- 卸载（如果还有）
+	- 卸载（如果还有依赖项）
 
 	``` dos
 	sudo apt-get autoremove --purge mysql-apt-config
