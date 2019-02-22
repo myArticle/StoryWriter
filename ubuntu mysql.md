@@ -5,6 +5,7 @@ grammar_cjkRuby: true
 date: 2018-7-23
 ---
 
+## 安装
 
 - 安装
 
@@ -51,3 +52,89 @@ date: 2018-7-23
 			``` dos?linenums
 			sudo service mysql restart
 			```
+			
+## 操作
+
+- 查看当前数据库
+
+	``` dos
+	show databases;
+	```
+	
+- 创建数据库
+
+	``` dos
+	create database <database_name>;
+	```
+	
+- 删除数据库
+
+	``` dos
+	drop database <database_name>;
+	```
+	
+- 选择数据库
+
+	``` dos
+	use <database_name>;
+	```
+	
+- 查看当前数据库的数据表
+
+	``` dos
+	show tables;
+	```
+	
+- 创建数据表
+
+	``` dos
+	create table <table_name> (<column_name> <column_type>) engine=innodb default charset=utf8;
+	```
+
+- 删除数据表
+
+	``` dos
+	drop table <table_name>;
+	```
+	
+- 查看数据表的表结构
+
+	``` dos
+	desc <table_name>;
+	```
+	
+- 数据表插入数据
+
+	``` dos
+	insert into <table_name> (field1, field2, field3, field4) values (value1, value2, value3, value4), (value1, value2, value3, value4), (value1, value2, value3, value4);
+	```
+	
+- 读取数据表所有数据
+
+	 ``` dos
+	 select * from <table_name>;
+	 ```
+	 
+- 按条件查询（分页）数据表数据
+
+	``` dos
+	select (field1, field2) from <table_name> [where <query_terms>] [limit <page-size>] [offset <page-number>];
+	```
+	
+- 修改数据表数据
+
+	``` dos
+	update <table_name> set field1 = value1, field = value2 [where <query_terms>];
+	```
+	
+- 删除数据表数据
+
+	``` dos
+	delete from <table_name> [where <query_terms>];
+	```
+	
+- 清空数据表数据
+
+	``` dos
+	delete from <table_name>;
+	```
