@@ -21,11 +21,61 @@ date: 2018-7-23
 	sudo netstat -tap | grep mysql
 	```
 	
+- 卸载
+
+	- 查看依赖项
+
+	``` dos
+	dpkg --list|grep mysql
+	```
+	
+	- 卸载
+	
+	``` dos
+	sudo apt-get remove mysql-common
+	```
+	
+	- 卸载
+
+	``` dos
+	sudo apt-get autoremove --purge mysql-server-5.7
+	```
+
+	- 卸载
+
+	``` dos
+	dpkg -l|grep ^rc|awk '{print$2}'|sudo xargs dpkg -P
+	```
+
+	- 再次查看依赖项
+	``` dos
+	dpkg --list|grep mysql
+	```
+	
+	- 卸载（如果还有）
+
+	``` dos
+	sudo apt-get autoremove --purge mysql-apt-config
+	```
+
 - 进入 mysql 服务
 
 	``` dos?linenums
 	sudo mysql -u root -p <password>
 	```
+	
+	- 删除匿名用户
+
+		- 选择数据库 mysql
+
+		``` dos
+		use mysql;
+		```
+		- 删除匿名用户
+
+		``` dos
+		delete from user where user='';
+		```
 	
 	- 设置 mysql 允许远程访问
 
@@ -39,6 +89,12 @@ date: 2018-7-23
 
 			``` dos?linenums
 			grant all on *.* to root@'%' identified by '你的密码' with grant option;
+			```
+				
+			>如果需要指定访问主机，可以把 `%` 替换为主机的IP或者主机名。另外，这种方法会在数据库 mysql 的数据表 user 中，增加一条记录。如果不想增加记录，只是想把某个已存在的用户（例如 root ）修改成允许远程主机访问，则可以使用如下 SQL 来完成：
+
+			``` dos
+			update user set host='%' where user='root' and host='localhost';
 			```
 			
 		- 使操作生效
