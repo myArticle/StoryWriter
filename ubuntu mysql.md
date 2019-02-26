@@ -1,5 +1,5 @@
 ---
-title: ubuntu mysql
+title: ubuntu 18.04 安装 mysql 服务
 tags: mysql,ubuntu
 grammar_cjkRuby: true
 date: 2018-7-23
@@ -10,104 +10,170 @@ date: 2018-7-23
 - 安装
 
 	``` dos?linenums
-	sudo apt install mysql-server
-	sudo apt install mysql-client
-	sudo apt install libmysqlclient-dev
-	```
-
-- 查看安装是否成功
-
-	``` dos?linenums
-	sudo netstat -tap | grep mysql
+	sudo apt-get install mysql-server mysql-common mysql-client
 	```
 	
-- 卸载
+-  `mysqladmin -u root password your-new-password` 期望为 root 用户设置密码成功。
 
-	- 查看依赖项
+	设置密码失败。
+	错误原因  `mysqladmin: connect to server at 'localhost' failed
+error: 'Access denied for user 'root'@'localhost''` 。
 
-	``` dos
-	dpkg --list|grep mysql
-	```
-	
-	- 卸载
-	
-	``` dos
-	sudo apt-get remove mysql-common
-	```
-	
-	- 卸载
+- 重启
 
-	``` dos
-	sudo apt-get autoremove --purge mysql-server-5.7
-	```
+``` dos?linenums
+sudo /etc/init.d/mysql restart
+```
 
-	- 卸载
 
-	``` dos
-	dpkg -l|grep ^rc|awk '{print$2}'|sudo xargs dpkg -P
-	```
+##  登录 mysql 服务问题
 
-	- 再次查看依赖项
-	``` dos
-	dpkg --list|grep mysql
-	```
-	
-	- 卸载（如果还有依赖项）
+- `mysql -u root -p` 期望正确输入密码连接服务。
 
-	``` dos
-	sudo apt-get autoremove --purge mysql-apt-config
-	```
+	输入密码是否正确，都会连接失败。
+	错误原因 `ERROR 1698 (28000): Access denied for user 'root'@'localhost'` 。
 
-- 进入 mysql 服务
+	- 解决办法
 
-	``` dos?linenums
-	sudo mysql -u root -p <password>
-	```
-	
-	- 删除匿名用户
+		>删除 root 用户，重新创建用户。
 
-		- 选择数据库 mysql
-
-		``` dos
-		use mysql;
-		```
-		- 删除匿名用户
-
-		``` dos
-		delete from user where user='';
-		```
-	
-	- 设置 mysql 允许远程访问
-
-		- 注释掉 `bind-address = 127.0.0.1`
-
-			``` dos?linenums
-			sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
-			```
-			
-		- 进入 mysql 服务，执行授权命令，为用户赋予操作数据库的所有权限
-
-			``` dos?linenums
-			grant all on *.* to root@'%' identified by '你的密码' with grant option;
-			```
-				
-			>如果需要指定访问主机，可以把 `%` 替换为主机的IP或者主机名。另外，这种方法会在数据库 mysql 的数据表 user 中，增加一条记录。如果不想增加记录，只是想把某个已存在的用户（例如 root ）修改成允许远程主机访问，则可以使用如下 SQL 来完成：
+		- 登录
 
 			``` dos
-			update user set host='%' where user='root' and host='localhost';
+			sudo mysql
+			```
+
+		- 查看当前用户用户
+
+			``` dos?linenums
+			select user, host from mysql.user;
+			
+			+------------------+-----------+
+			| user             | host      |
+			+------------------+-----------+
+			| debian-sys-maint | localhost |
+			| mysql.session    | localhost |
+			| mysql.sys        | localhost |
+			| root             | localhost |
+			+------------------+-----------+
+			```
+
+		- 删除 'root'@'localhost' 该条记录
+
+			``` dos?linenums
+			drop user 'root'@'localhost';
+			```
+
+		- 重新创建 root 用户
+
+			``` dos?linenums
+			create user 'root'@'%' identified by '666666';
+			```
+
+		- 查看当前用户用户
+
+			``` dos?linenums
+			select user, host from mysql.user;
+			
+			+------------------+-----------+
+			| user             | host      |
+			+------------------+-----------+
+			| root             | %         |
+			| debian-sys-maint | localhost |
+			| mysql.session    | localhost |
+			| mysql.sys        | localhost |
+			+------------------+-----------+
 			```
 			
-		- 使操作生效
+		- 给新建的用户 root 所有权限（重要）
+
+			``` dos?linenums
+			grant all privileges on *.* to 'root'@'%' with grant option;
+			```
 
 			``` dos?linenums
 			flush privileges;
 			```
 			
-		- 重启 mysql 服务
+		- `sudo mysql` 失效，需要通过 `mysql -u root -p` 正确输入密码后成功连接。
 
-			``` dos?linenums
-			sudo service mysql restart
-			```
+## 修改字符集
+
+- 查看字符集
+
+	``` dos
+	sudo mysql
+	```
+	
+	``` sql?linenums
+	show variables like 'char%';
+	```
+	
+	``` sql?linenums
+	show variables like 'collation%';
+	```
+	
+- 修改字符集
+
+	- 打开文件 `/etc/mysql/my.cnf`
+	
+	``` dos
+	sudo vim /etc/mysql/my.cnf
+	```
+	
+	- 添加以下内容
+	
+	``` dsconfig?linenums
+	[mysqld]
+	collation-server = utf8_unicode_ci
+	init-connect='SET NAMES utf8'
+	character-set-server = utf8
+	```
+	
+	- 重启服务
+
+	``` dos
+	sudo service mysql restart
+	```
+
+
+## 卸载
+
+- 查看依赖项
+
+``` dos
+dpkg --list|grep mysql
+```
+
+- 卸载
+
+``` dos
+sudo apt-get remove mysql-common
+```
+
+- 卸载
+
+``` dos
+sudo apt-get autoremove --purge mysql-server-5.7
+```
+
+- 卸载
+
+``` dos
+dpkg -l | grep ^rc | awk '{print$2}' | sudo xargs dpkg -P
+```
+
+- 再次查看依赖项
+``` dos
+dpkg --list|grep mysql
+```
+
+- 卸载（如果还有依赖项）
+
+``` dos
+sudo apt-get autoremove --purge mysql-apt-config
+```
+
 			
 ## 操作
 
