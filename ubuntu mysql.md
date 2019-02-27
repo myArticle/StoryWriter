@@ -260,3 +260,34 @@ sudo apt-get autoremove --purge mysql-apt-config
 	``` dos
 	delete from <table_name>;
 	```
+	
+	
+## node 连接 mysql 服务
+
+``` javascript?linenums
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    host: 'localhost',		// 本机
+    // host: '192.168.4.43',		// 内网 ip
+    // host: 'jia-lei.vicp.io',		//  外网 ip ，这里用到了花生壳的内网穿透
+    // port: '52751',		//  本机 和 内网 的端口为默认 3306
+    user: 'root',
+    password: '666666',
+    database: 'mysql'
+})
+
+connection.connect(function (err) {
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
+    console.log('connected as id ' + connection.threadId);
+});
+
+connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+});
+
+connection.end();
+```
