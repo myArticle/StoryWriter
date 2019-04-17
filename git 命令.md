@@ -168,6 +168,40 @@ git revert [commit-number]
 git push
 ```
 
+
+---
+# 清空分支
+
+- 切换要被清空内容的分支
+
+``` dos?linenums
+git checkout [branch-name]
+```
+
+- 清空
+
+``` dos?linenums
+git rm -rf .
+```
+
+- 查看
+
+``` dos?linenums
+git status
+```
+
+- 添加到暂存区
+
+``` dos?linenums
+git add .
+```
+
+- 添加到本地仓库
+
+``` dos?linenums
+git commit -m "feat():清除该分支内容"
+```
+
 ---
 # 实例
 
