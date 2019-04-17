@@ -202,6 +202,30 @@ git add .
 git commit -m "feat():清除该分支内容"
 ```
 
+
+---
+# 删除分支
+
+- 查看分支
+
+``` dos?linenums
+git branch
+```
+
+- 查看分支（包括远程分支）
+
+``` dos?linenums
+git branch -a
+```
+
+- 删除分支，请切换到其他分支后操作
+
+``` dos?linenums
+git branch -D [branch-name]
+```
+
+
+
 ---
 # 实例
 
