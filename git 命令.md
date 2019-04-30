@@ -170,9 +170,9 @@ rm -rf [filename]
 ```
 
 
-# 删除使用 `git add` 缓存到暂存区，但未使用 `git commit` 提交
+# 删除使用 `git add` 缓存到暂存区，但未使用 `git commit` 提交，即暂存区的修改
 
-- 撤销添加文件到缓存区，回到 `git add` 之前的状态
+- 撤销添加文件到缓存区，回到 `git add` 之前的状态，保留工作区的修改内容
 
 ``` dos?linenums
 git reset HEAD [filename]
@@ -185,14 +185,52 @@ git reset HEAD .
 
 # 删除使用 `git commit` 添加到本地仓库，但未同步到远程仓库
 
+ 1. 
+	- 查看 `commit` 记录
+    
+    ``` dos?linenums
+	git log
+	```
+	
+	- 返回某次 `commit` 后的版本，不会保留修改的内容
+
+	``` dos?linenums
+	git reset --hard [commit]
+	```
+
+ 2. 
+	返回上次 `commit` 后的状态，不会保留修改的内容
+
+``` dos?linenums
+git reset --hard HEAD^
+```
+
+3. 撤销 `git commit` 操作，回到 `git add` 之前的状态，保留修改的内容
+
+``` dos?linenums
+git reset [commit]
+```
+
+
+# 删除远程仓库的提交，或者说是回滚到某一版本
+
 - 查看 `commit` 记录
 
 ``` dos?linenums
 git log
 ```
 
-- 
+- 回滚到某次 `commit` 后的版本
 
+``` dos?linenums
+git reset --hard [commit]
+```
+
+- 本地代码回滚，但远程仓库没有，所以可以提交本地覆盖远程仓库
+
+``` dos?linenums
+git push origin master --force
+```
 
 
 ---
