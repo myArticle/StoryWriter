@@ -147,19 +147,53 @@ git push
 ```
 
 
-# 删除未使用 `git add` 缓存的文件
+# 删除未使用 `git add` 缓存的文件，即工作区的修改
 
 - 删除修改文件后的内容
 
 ``` dos?linenums
 git checkout -- [filename]
+
+or
+
+git checkout [filename]
+
+or
+
+git checkout .
 ```
 
-- 删除新建的文件
+- 删除新建的文件，因为新建的文件一般还没有加入到 `git` 中，所以 `git` 是无感知的
 
 ``` dos?linenums
 rm -rf [filename]
 ```
+
+
+# 删除使用 `git add` 缓存到暂存区，但未使用 `git commit` 提交
+
+- 撤销添加文件到缓存区，回到 `git add` 之前的状态
+
+``` dos?linenums
+git reset HEAD [filename]
+
+or
+
+git reset HEAD .
+```
+
+
+# 删除使用 `git commit` 添加到本地仓库，但未同步到远程仓库
+
+- 查看 `commit` 记录
+
+``` dos?linenums
+git log
+```
+
+- 
+
+
 
 ---
 # 回滚
