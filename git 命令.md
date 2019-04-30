@@ -147,6 +147,20 @@ git push
 ```
 
 
+# 删除未使用 `git add` 缓存的文件
+
+- 删除修改文件后的内容
+
+``` dos?linenums
+git checkout -- [filename]
+```
+
+- 删除新建的文件
+
+``` dos?linenums
+rm -rf [filename]
+```
+
 ---
 # 回滚
 
