@@ -104,6 +104,23 @@ grammar_cjkRuby: true
 ```
 
 
+## 安装 nvm 管理 node.js
+
+### [下载](https://github.com/coreybutler/nvm-windows/releases)
+
+- [下载 nvm-setup.zip](https://github.com/coreybutler/nvm-windows/releases) 文件，安装
+
+- 安装时注意 `nvm` 的安装目录和 `node` 的安装目录
+
+- 添加淘宝镜像，打开 `/d/software/install/nvm/settings.txt` 文件，添加 `node_mirror` 和 `npm_mirror`
+
+	```tex
+	root: D:\software\install\nvm
+	path: D:\software\install\nvm-node
+	node_mirror: https://npm.taobao.org/mirrors/node/
+	npm_mirror: https://npm.taobao.org/mirrors/npm/
+	```
+
 ## 参考链接
 
 https://segmentfault.com/a/1190000019055976
