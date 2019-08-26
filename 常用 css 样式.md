@@ -15,3 +15,17 @@ display -webkit-box
 overflow hidden
 word-break break-all		// 处理英文不换行问题
 ```
+
+## 滚动条样式
+
+```css
+::-webkit-scrollbar {
+  width: 5px;
+  height: 1px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.3);
+}
+```
