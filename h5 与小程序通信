@@ -1,0 +1,117 @@
+## h5 与微信小程序通信
+
+### 前提背景
+
+微信小程序内使用微信组件 web-view 引入 h5 页面
+
+### 微信小程序向 h5 传递数据
+
+微信小程序向 h5 传递数据，在小程序里使用 web-view ，通过浏览器地址栏传参（url?key=value），在 h5 获取 url 解析，得到数据。
+
+微信小程序
+
+```wxml
+<web-view src="/pages/webViewBridge/webViewBridge?url=http://192.168.43.226/web-view?token=token"></web-view>
+```
+
+h5
+
+```vue
+<template>
+    <div>
+        <h2>web-view</h2>
+        <div>{{params}}</div>
+    </div>
+</template>
+
+<script>
+export default {
+    data () {
+        return {
+            params: null
+        }
+    },
+    methods: {
+        getParams () {
+          let o = {}
+          let a = location.search.replace(/\?/, '').split('&')
+          a.forEach(v => {
+            let b = v.split('=')
+            if(b) o[b[0]] = b[1]
+          })
+          return o
+        }
+    },
+    created () {
+      this.params = this.getParams()
+    }
+}
+</script>
+```
+
+### h5 向小程序发送数据，通过微信 JSSDK 提供的 API `wx.miniProgram.postMessage({data: {isSuccess: true } })` 发送数据，小程序中在 web-view 上设置 bindmessage 事件监听，得到数据。
+
+⚠️注意：网页向小程序 postMessage 时，会在特定时机（小程序后退、组件销毁、分享）触发并收到消息。
+
+h5
+
+```vue
+<template>
+    <div>
+        <h2>web-view</h2>
+        <div>{{localStorage}}</div>
+        <button @click="sendMessage">发送信息</button>
+        <div>msg: {{msg}}</div>
+        <div>miniprogram: {{miniprogram}}</div>
+        <div>wxjs: {{wxjs}}</div>
+    </div>
+</template>
+
+<script>
+export default {
+    data () {
+        return {
+            msg: '',
+            miniprogram: '',
+            wxjs: '',
+        }
+    },
+    methods: {
+        sendMessage () {
+            let msg = Math.random().toString(32)
+            this.msg = msg
+            this.wxjs = window.__wxjs_environment
+            // 判断是否是小程序环境
+            wx.miniProgram.getEnv((res) => {
+                this.miniprogram = res.miniprogram || 'none';
+            });
+            wx.miniProgram.navigateBack()       //  网页向小程序 postMessage 时，会在特定时机（小程序后退、组件销毁、分享）触发并收到消息。
+            wx.miniProgram.postMessage({data: { isSuccess: true } })
+        }
+    }
+}
+</script>
+```
+
+微信小程序
+
+```wxml
+<web-view src="{{url}}" bindmessage="onWebViewMessage" bindload="onWebViewLoad" binderror="onWebViewError"></web-view>
+```
+
+```wxjs
+Page({
+  onWebViewMessage(e) {
+    console.log('webview onWebViewMessage ', e)
+    let data = e.detail.data
+    let currentMsg = data[data.length - 1]
+    console.log('currentMsg ', currentMsg)
+  },
+  onWebViewLoad(e) {
+    console.log('webview onWebViewLoad ', e)
+  },
+  onWebViewError(e) {
+    console.log('webview onWebViewError ', e)
+  }
+})
+```
