@@ -43,4 +43,11 @@ grammar_cjkRuby: true
 
 ## 参考
 
- 1. [凹凸实验室](https://aotu.io/notes/2017/11/27/iphonex/index.html)
+ 1. [京东](https://m.jd.com/)
+
+	![jingdong](./images/1573727170878.png)
+ 2. [淘宝](https://h5.m.taobao.com/)
+
+	![taobao](./images/1573727023265.png)
+
+ 3. [凹凸实验室](https://aotu.io/notes/2017/11/27/iphonex/index.html)
