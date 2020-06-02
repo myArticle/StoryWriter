@@ -304,12 +304,16 @@ git branch
 git branch -a
 ```
 
-- 删除分支，请切换到其他分支后操作
+- 删除本地分支，请切换到其他分支后操作
 
 ``` dos?linenums
 git branch -D [branch-name]
 ```
+- 删除远程分支
 
+``` dos
+git push origin --delete [branch-name]
+```
 
 ---
 # 实例
